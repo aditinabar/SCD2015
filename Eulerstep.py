@@ -2,12 +2,13 @@ from __future__ import division
 
 __author__ = 'naditi'
 
+#import packages
 import math
 import decimal
 import pylab as pl
 import numpy as np
 
-# #Enter function to test
+# Collection of equations to test the functions below
 def f_1(x, y):
     return 7*y**2*x**3
     # y(2) = 3
@@ -17,6 +18,8 @@ def f_1(x, y):
 # y(t) = a*e^(-2t)
 # y' = ty
 # y(t) = a*e^(-1/2 t^2)
+# eulerstep_iterate(f_euler(x), -4, 1, 0, 1000)
+# eulerstep_iterate(lambda x, y: math.cos(x) + math.sin(y), 0, 1, 1, 1000)
 
 def f_2(x, y):
     return math.cos(x) + math.sin(y)
@@ -31,7 +34,7 @@ def euler_step(f, start_time, start_position):
     return y_prime
 
 # euler
-# getting mad about n. find out why.
+# works for scalars
 def euler_iterate(f, t_0, end_time, y_0, h, output):
     n = int((end_time - t_0)/h)
     N = n+1
@@ -50,7 +53,7 @@ def euler_iterate(f, t_0, end_time, y_0, h, output):
         pl.plot(t,y,'go')
         pl.show()
 
-
+# works for scalars
 def rk_iterate(f, start_time, end_time, start_position, h, output):
     # step = (end_time - start_time)/n
     # N = n+1
@@ -72,9 +75,6 @@ def rk_iterate(f, start_time, end_time, start_position, h, output):
         pl.plot(t,y,'go')
         pl.show()
 
-# eulerstep_iterate(f_euler(x), -4, 1, 0, 1000)
-
-# eulerstep_iterate(lambda x, y: math.cos(x) + math.sin(y), 0, 1, 1, 1000)
 
 def fun_matrix(t,x,y,z):
     return 2*x + t
@@ -84,16 +84,12 @@ def fun_matrix(t,x,y,z):
 ## oregonator differential equation
 def oregonator(t, x):
     x_dot = np.zeros((3, 1), dtype= np.float64)
-    # print("b")
-    # print(x[1])
     x_dot[0] = 77.27 * (x[1] - x[0] * x[1] + x[0] - 8.375e-06*(x[0]**2))
-    # print("c")
     x_dot[1] = (x[2] - x[0]*x[1] - x[1]) / 77.27
     x_dot[2] = 0.161*(x[0] - x[2])
-    # x_dot.shape = (3,1)
     return x_dot.T
 
-
+# Runge-Kutta 4 for vectors
 def vector_rk4(f, t_0, t_fin, y_0, h):
     steps = int((t_fin - t_0)/h)
     dy = len(y_0)
@@ -124,6 +120,4 @@ def vector_rk4(f, t_0, t_fin, y_0, h):
     print(t)
     print(y)
 
-# decimal.Decimal(10*0.01536)
 
-np.array([3,4,5],)

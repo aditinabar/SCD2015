@@ -84,75 +84,43 @@ def fun_matrix(t,x,y,z):
 def oregonator(t, x):
     x_dot = np.zeros((3, 1), dtype= np.float64)
     print("b")
-    print(x[1])
+    # print(x[1])
     x_dot[0] = 77.27 * (x[1] - x[0] * x[1] + x[0] - 8.375e-06*(x[0]**2))
     print("c")
-    print(x_dot[0])
     x_dot[1] = (x[2] - x[0]*x[1] - x[1]) / 77.27
     x_dot[2] = 0.161*(x[0] - x[2])
     # x_dot.shape = (3,1)
-    print(x_dot)
-    return x_dot
+    return x_dot.T
 
 
 def vector_ode(f, t_0, t_fin, y_0, h):
     steps = int((t_fin - t_0)/h)
-    # N = n+1
     dy = len(y_0)
     print(len(y_0))
     y_0a = np.array(y_0, ndmin=2)
     t = np.zeros((steps, 1))
     t[0] = t_0
     y = np.zeros((steps, dy))
-    print("y[0] shape")
-    print(y[0].shape)
-    print("y_0a")
-    print(y_0a)
-    print("y_0 shape:")
-    print(y_0a.shape)
     y[0] = y_0a
     print("y[0]")
     print(y[0])
-    print("y shape:")
-    print(y.shape)
-    # print("t shape:")
-    # print(t.shape)
-    for i in range(steps):
-        print("a: y[i]")
-        print(y[i])
+    for i in range(steps+1):
         k_1 = f(t[i], y[i])
         print("d")
-        print(k_1)
-        print(y[i])
-        print("y[i] + h/2 + k_1:")
-        print(y[i] + h/2*k_1)
-        # d = y[i] + h/2*k_1
-        # print("d[i]")
-        # print(d[i])
-        k_2y = y[i] + (h/2)*k_1
-        k_2 = f(t[i] + h/2, k_2y[i])
+        k_2y = y[i, np.newaxis] + (h/2)*k_1
+        k_2 = f(t[i] + h/2, k_2y[0])
         print("e")
-        print("HELLO WORLD HELLO WORLD HELLO WORLD HELLO WORLD")
-        k_3y = y[i] + (h/2)*k_2
-        k_3 = f(t[i] + h/2, k_3y[i])
+        k_3y = y[i, np.newaxis] + (h/2)*k_2
+        k_3 = f(t[i] + h/2, k_3y[0])
         print("f")
         print("ffffffff")
-        k_4y = y[i] + h*k_3
-        k_4 = f(t[i] + h, k_4y[i])
-        print("k_4")
-        print(k_4)
-        print(k_4.shape)
-        print(k_4[0])
-        print("shape y[i] =")
-        print(y[i].shape)
-        print("shape h/6.... ")
-        print(((h/6)*(k_1 + 2*k_2 + 2*k_3 + k_4)).shape)
-        y[i+1] = y[i] + ((h/6)*(k_1 + 2*k_2 + 2*k_3 + k_4)) #make sure these two parts have the same shape
-        print("y[0]")
-        print(y[0])
-        print("y[1]")
-        print(y[1])
+        k_4y = y[i, np.newaxis] + h*k_3
+        k_4 = f(t[i] + h, k_4y[0])
+        y[i+1, np.newaxis] = (y[i, np.newaxis] + ((h/6)*(k_1 + 2*k_2 + 2*k_3 + k_4)))
+        print("g")
         t[i+1] = t[i] + h
+        print("Done "+str(i+1)+" times.")
+
     print(t)
     print(y)
 

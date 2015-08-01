@@ -33,8 +33,9 @@ def euler_step(f, start_time, start_position):
 # euler
 # getting mad about n. find out why.
 def euler_iterate(f, t_0, end_time, y_0, h, output):
-    # step = (end_time - t_0)/n
+    n = int((end_time - t_0)/h)
     N = n+1
+    print(N)
     t = [0]*N
     t[0] = t_0
     y = [0]*N
@@ -83,17 +84,17 @@ def fun_matrix(t,x,y,z):
 ## oregonator differential equation
 def oregonator(t, x):
     x_dot = np.zeros((3, 1), dtype= np.float64)
-    print("b")
+    # print("b")
     # print(x[1])
     x_dot[0] = 77.27 * (x[1] - x[0] * x[1] + x[0] - 8.375e-06*(x[0]**2))
-    print("c")
+    # print("c")
     x_dot[1] = (x[2] - x[0]*x[1] - x[1]) / 77.27
     x_dot[2] = 0.161*(x[0] - x[2])
     # x_dot.shape = (3,1)
     return x_dot.T
 
 
-def vector_ode(f, t_0, t_fin, y_0, h):
+def vector_rk4(f, t_0, t_fin, y_0, h):
     steps = int((t_fin - t_0)/h)
     dy = len(y_0)
     print(len(y_0))
@@ -104,23 +105,22 @@ def vector_ode(f, t_0, t_fin, y_0, h):
     y[0] = y_0a
     print("y[0]")
     print(y[0])
-    for i in range(steps+1):
+    for i in range(steps-1):
         k_1 = f(t[i], y[i])
-        print("d")
+        #print("d")
         k_2y = y[i, np.newaxis] + (h/2)*k_1
         k_2 = f(t[i] + h/2, k_2y[0])
-        print("e")
+        #print("e")
         k_3y = y[i, np.newaxis] + (h/2)*k_2
         k_3 = f(t[i] + h/2, k_3y[0])
-        print("f")
-        print("ffffffff")
+        #print("f")
+        #print("ffffffff")
         k_4y = y[i, np.newaxis] + h*k_3
         k_4 = f(t[i] + h, k_4y[0])
         y[i+1, np.newaxis] = (y[i, np.newaxis] + ((h/6)*(k_1 + 2*k_2 + 2*k_3 + k_4)))
-        print("g")
+        #print("g")
         t[i+1] = t[i] + h
-        print("Done "+str(i+1)+" times.")
-
+        #print("Done "+str(i+1)+" times.")
     print(t)
     print(y)
 

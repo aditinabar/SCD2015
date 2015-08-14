@@ -1,6 +1,7 @@
 from __future__ import division
 import random
 
+# DONE
 def doors(nwalks):
     door1_tot = 0
     door2_tot = 0
